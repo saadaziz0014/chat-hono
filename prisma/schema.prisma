@@ -14,15 +14,16 @@ datasource db {
 }
 
 model User {
-  id         String   @id
+  id         String    @id
   name       String
-  email      String   @unique
+  email      String    @unique
   password   String
   profilePic String
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
   Chat       Chat?
-  isActive   Boolean  @default(true)
+  isActive   Boolean   @default(true)
+  Message    Message[]
 }
 
 model Chat {
@@ -31,6 +32,18 @@ model Chat {
   user       User     @relation(fields: [userId], references: [id])
   userId     String   @unique()
   isDeleted  Boolean  @default(false)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  Message    Message?
+}
+
+model Message {
+  id         String   @id
+  chat       Chat     @relation(fields: [chatId], references: [id])
+  chatId     String   @unique
+  user       User     @relation(fields: [userId], references: [id])
+  userId     String
+  message    String
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 }
